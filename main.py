@@ -150,6 +150,7 @@ def parse_args():
         "--hub_model_id", type=str, help="The name of the repository to keep in sync with the local `output_dir`."
     )
     parser.add_argument("--hub_token", type=str, help="The token to use to push to the Model Hub.")
+    parser.add_argument("-freeze", action='store_true', help="Whether to freeze all but the last layer")
     args = parser.parse_args()
 
     # Sanity checks
@@ -266,6 +267,14 @@ def main():
         from_tf=bool(".ckpt" in args.model_name_or_path),
         config=config,
     )
+
+    # Freeze everything but the last layer
+    if args.freeze:
+        for param in model.parameters():
+            param.requires_grad = False
+        for param in model.classifier.parameters():
+            param.requires_grad = True
+
 
     # Preprocessing the datasets
     if args.task_name is not None:
