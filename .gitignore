@@ -1,0 +1,35 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# Target folders #
+*/.settings/*
+*/target/**
+
+# IDE files #
+.idea
+.metadata
+.project
+.classpath
+.settings/*
+**/*.iml
+/target/
+/bin/
+
+# cert folders #
+certs/
+servercerts/
+
+# EMACS files #
+*~
+\#*\#
+.\#*
+
+# OSX files #
+.DS_Store
+
+#certs#
+*/servercerts/*

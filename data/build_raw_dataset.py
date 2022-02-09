@@ -5,10 +5,11 @@ import time
 
 TWITTER_API_RATE_LIMIT = 30000
 
-EMOJIS = "👌,💔,💗,😂,😆,😉,😙,😚,😜,😨,😩,😲,🙀"
+#EMOJIS = "👌,💔,💗,😂,😆,😉,😙,😚,😜,😨,😩,😲,🙀"
+EMOJIS = "😂,💕,😭,😍,😊,😘,😔,😩,🙏,👌,😡,🔥"
 EMOJI_MAP_FILE = "/Users/anfalsiddiqui/development/cs329s/Project/data/5822100/emoji_map_1791.csv"
-RAW_DATA_FILE = "/Users/anfalsiddiqui/development/cs329s/Project/data/5822100/full_train_plaintext.txt"
-PROCESSED_OUTPUT_FILE = "/Users/anfalsiddiqui/development/cs329s/Project/data/processed/full_train.csv"
+RAW_DATA_FILE = "/Users/anfalsiddiqui/development/cs329s/Project/data/5822100/balanced_test_plaintext.txt"
+PROCESSED_OUTPUT_FILE = "/Users/anfalsiddiqui/development/cs329s/Project/data/processed/test.csv"
 
 def get_emoji_ids():
     df = pd.read_csv(EMOJI_MAP_FILE)
@@ -29,12 +30,12 @@ def convert_twitter_api_response_to_processed_rows(twitter_api_resp, df):
     for record in data:
         id, text = record["id"], record["text"]
         annotations = df[df["id"] == id]["annotations"].iloc[0]
-        rows.append({id: id, text: text, annotations: annotations})
+        rows.append({"id": id, "text": text, "annotations": annotations})
     return rows
 
 def create_and_save_csv_from_rows(rows):
     df = pd.DataFrame(rows)
-    df.to_csv("")
+    df.to_csv(PROCESSED_OUTPUT_FILE, index=False)
 
 
 def filter_raw_dataset(raw_dataset_df, df_conditions):
@@ -47,7 +48,9 @@ if __name__ == "__main__":
     raw_dataset_filtered_df = filter_raw_dataset(raw_dataset_df, df_conditions)
     processed_rows = []
 
-    for i in range(len(raw_dataset_filtered_df) // TWITTER_API_RATE_LIMIT + 1):
+    iterations = len(raw_dataset_filtered_df) // TWITTER_API_RATE_LIMIT + 1
+    for i in range(iterations):
+        print(f'Performing iteration {i+1} of {iterations}')
         request_limit_subset = raw_dataset_filtered_df[TWITTER_API_RATE_LIMIT * i:TWITTER_API_RATE_LIMIT * (i + 1)]
         for j in range(len(request_limit_subset) // 100):
             request_subset = request_limit_subset[100*j:100*(j+1)]
