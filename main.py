@@ -235,7 +235,7 @@ def main():
         extension = (args.train_file if args.train_file is not None else args.valid_file).split(".")[-1]
         raw_datasets = {}
         for split in data_files:
-            df = pd.read_csv(data_files[split]).dropna()
+            df = pd.read_csv(data_files[split], lineterminator='\n').dropna()
             df = Dataset.from_pandas(df)
             df = df.remove_columns('__index_level_0__')
             raw_datasets[split] = df
