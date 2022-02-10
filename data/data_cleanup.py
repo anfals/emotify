@@ -10,7 +10,6 @@ def clean_single_text(text:str) -> str:
     clean_text = emoji.get_emoji_regexp().sub(r'', text)
     clean_text = re.sub(r"(?:\@|https?\://)\S+", "", clean_text)
     clean_text = clean_text.strip()
-    assert(type(clean_text) == str)
     return clean_text
 
 def label_single_text(text:str) -> list:
@@ -31,8 +30,9 @@ def clean_data(data_csv: str):
     df['clean_text'] = df['text'].apply(clean_single_text)
     df['label'] = df['text'].apply(simple_label)
     new_df = df[['clean_text', 'label']]
-    new_df = new_df[df['clean_text'].notna()]
-    new_df = new_df[df['label'].notna()]
+    new_df = new_df[new_df['clean_text'].notna()]
+    new_df = new_df[new_df['clean_text'].map(len) > 0]
+    new_df = new_df[new_df['label'].notna()]
     new_df.to_csv(data_csv[:data_csv.find('.csv')] + "_cleaned.csv", index=False)
 
 if __name__ == "__main__":
