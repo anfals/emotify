@@ -33,3 +33,9 @@ servercerts/
 
 #certs#
 */servercerts/*
+
+#model#
+model/
+
+#test#
+test/
