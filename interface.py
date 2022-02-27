@@ -21,6 +21,7 @@ def run_streamlit():
             else:
                 st.write('Your chosen emoji: ', output['label'])
                 st.write('Confidence: ', output['score'])
+                st.write(f"[Emojipedia Entry for {output['label']}](https://emojipedia.org/{output['label']}/)")
 
 
 if __name__ == "__main__":
