@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 import model
 import pandas as pd
-import matplotlib.pyplot as plt
+import altair as alt
 
 
 def run_streamlit():
@@ -19,9 +19,23 @@ def run_streamlit():
                 st.write(
                     'We\'re sorry. The Emotify machine is not working right now, or you have put in an improperly formatted input. Please try again.')
             else:
-                st.write('Your chosen emoji: ', output['label'])
-                st.write('Confidence: ', output['score'])
-                st.write(f"[Emojipedia Entry for {output['label']}](https://emojipedia.org/{output['label']}/)")
+                sorted_response = sorted(
+                    output, key=lambda v: v['score'], reverse=True)
+                st.write('Your chosen emoji: ', sorted_response[0]['label'])
+                st.write('Confidence: ', sorted_response[0]['score'])
+                st.write(
+                    f"[Emojipedia Entry for {sorted_response[0]['label']}](https://emojipedia.org/{sorted_response[0]['label']}/)")
+
+                alt_chart = alt.Chart(pd.DataFrame(sorted_response)).mark_bar().encode(
+                    x='label:O',
+                    y="score:Q",
+                    color=alt.condition(
+                        alt.datum.label == sorted_response[0]['label'],
+                        alt.value('orange'),
+                        alt.value('steelblue')
+                    )
+                )
+                st.altair_chart(alt_chart, use_container_width=True)
 
 
 if __name__ == "__main__":

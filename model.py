@@ -16,11 +16,12 @@ import json
 class ModelCloudRun:
     def __init__(self):
         self.API_URL = 'https://flask-app-b6jw7kny2q-wm.a.run.app'
+        self.local_url = 'http://127.0.0.1:5000'
 
     def predict(self, tweet):
         task = 'predict'
         PARAMS = {'tweet': tweet}
-        response = requests.get('https://flask-app-b6jw7kny2q-wm.a.run.app/{}'.format(task),
+        response = requests.get('{}/{}'.format(self.API_URL, task),
                                 params=PARAMS)
 
         if response.status_code == 200:

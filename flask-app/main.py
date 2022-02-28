@@ -7,7 +7,7 @@ app = Flask(__name__)
 tokenizer = AutoTokenizer.from_pretrained(
     "vinai/bertweet-base", normalization=True)
 emojify = pipeline("text-classification",
-                   model="./model", tokenizer=tokenizer)
+                   model="./model", tokenizer=tokenizer, return_all_scores=True)
 tokenizer_kwargs = {'padding': True, 'truncation': True}
 
 
@@ -20,11 +20,7 @@ def test():
 def predict():
     user_input = request.args['tweet']
     prediction = emojify([user_input], **tokenizer_kwargs)
-    print(prediction)
-    print(prediction[0])
-    print(jsonify(prediction))
-    print(jsonify(prediction[0]))
-    return prediction[0]
+    return jsonify(prediction[0])
 
 
 if __name__ == "__main__":
