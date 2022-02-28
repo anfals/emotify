@@ -27,8 +27,8 @@ def run_streamlit():
                     f"[Emojipedia Entry for {sorted_response[0]['label']}](https://emojipedia.org/{sorted_response[0]['label']}/)")
 
                 alt_chart = alt.Chart(pd.DataFrame(sorted_response)).mark_bar().encode(
-                    x='label:O',
-                    y="score:Q",
+                    x='score:Q',
+                    y="label:O",
                     color=alt.condition(
                         alt.datum.label == sorted_response[0]['label'],
                         alt.value('orange'),
@@ -36,6 +36,8 @@ def run_streamlit():
                     )
                 )
                 st.altair_chart(alt_chart, use_container_width=True)
+                st.write('Copy emoji to clipboard below')
+                st.code(sorted_response[0]['label'])
 
 
 if __name__ == "__main__":
