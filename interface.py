@@ -10,6 +10,8 @@ def run_streamlit():
     title = st.title('Emotify')
     st.subheader(
         'Bring your tweets and messages to life with the help of ML generated emojis!')
+    st.caption(
+        'Possible emojis: 😍, 😘, 😂, 💕, 😊, 😜, :heart:, 😉, 😁, 💙, ✨, 😎, 💜, 🔥, 🎄, 📷, 📸, 💯, 🇺🇸, :sunny:')
     text = st.text_area('Emotify machine', value='', max_chars=280,
                         placeholder='Paste your tweet (280 characters max) here')
     if st.button('Click to Emotify!'):
@@ -25,7 +27,6 @@ def run_streamlit():
                 st.write('Confidence: ', sorted_response[0]['score'])
                 st.write(
                     f"[Emojipedia Entry for {sorted_response[0]['label']}](https://emojipedia.org/{sorted_response[0]['label']}/)")
-
                 alt_chart = alt.Chart(pd.DataFrame(sorted_response)).mark_bar().encode(
                     x='score:Q',
                     y="label:O",
