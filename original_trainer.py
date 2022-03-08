@@ -44,6 +44,9 @@ from transformers import (
 from transformers.file_utils import get_full_repo_name
 from transformers.utils.versions import require_version
 
+# This is the original code for training the model, a minor tweak of https://github.com/huggingface/transformers/blob/master/examples/pytorch/text-classification/run_glue_no_trainer.py
+# For how the final model was trained, see the 'Training' notebook
+
 
 logger = logging.getLogger(__name__)
 
